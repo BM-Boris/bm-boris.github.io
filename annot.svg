@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 320 180">
+  <!-- Generator: Adobe Illustrator 30.1.0, SVG Export Plug-In . SVG Version: 2.1.1 Build 136)  -->
+  <defs>
+    <style>
+      .st0 {
+        font-size: 15.35px;
+      }
+
+      .st0, .st1, .st2, .st3, .st4 {
+        isolation: isolate;
+      }
+
+      .st0, .st2, .st4 {
+        font-family: Arial-BoldMT, Arial;
+        font-weight: 700;
+      }
+
+      .st0, .st4 {
+        fill: #8b5a2b;
+      }
+
+      .st1 {
+        font-size: 13.82px;
+      }
+
+      .st1, .st3 {
+        fill: #67645f;
+        font-family: ArialMT, Arial;
+      }
+
+      .st5 {
+        fill: none;
+        stroke: #2f6f48;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 2px;
+      }
+
+      .st6 {
+        fill: #eef5ef;
+        stroke: #d7e7d7;
+      }
+
+      .st2 {
+        fill: #2f6f48;
+        font-size: 11.51px;
+      }
+
+      .st3 {
+        font-size: 14.14px;
+      }
+
+      .st4 {
+        font-size: 15.71px;
+      }
+
+      .st7 {
+        fill: #fff;
+        stroke: #ded9d1;
+      }
+    </style>
+  </defs>
+  <g>
+    <text class="st4" transform="translate(42.58 34.75)"><tspan x="0" y="0">FEATURE</tspan></text>
+    <rect class="st7" x="25.75" y="48.05" width="119.38" height="103.68" rx="8" ry="8"/>
+    <text class="st3" transform="translate(41.46 79.47)"><tspan x="0" y="0">m/z 312.18</tspan></text>
+    <text class="st3" transform="translate(41.46 107.74)"><tspan x="0" y="0">RT 4.7 min</tspan></text>
+    <text class="st3" transform="translate(41.46 136.02)"><tspan x="0" y="0">MS2 yes</tspan></text>
+  </g>
+  <g>
+    <text class="st0" transform="translate(205.2 33.84)"><tspan x="0" y="0">MATCH</tspan></text>
+    <rect class="st7" x="180.39" y="49.01" width="113.61" height="101.33" rx="8" ry="8"/>
+    <text class="st1" transform="translate(198.81 81.25)"><tspan x="0" y="0">HMDB</tspan></text>
+    <text class="st1" transform="translate(198.81 108.89)"><tspan x="0" y="0">Lipid-like</tspan></text>
+    <path class="st6" d="M208.02,119.64h58.34c5.09,0,9.21,4.12,9.21,9.21h0c0,5.09-4.12,9.21-9.21,9.21h-58.34c-5.09,0-9.21-4.12-9.21-9.21h0c0-5.09,4.12-9.21,9.21-9.21Z"/>
+    <path class="st5" d="M215.7,128.85l6.14,6.14,12.28-13.82"/>
+    <text class="st2" transform="translate(237.19 132.69)"><tspan x="0" y="0">hit</tspan></text>
+  </g>
+</svg>

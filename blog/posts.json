@@ -1,0 +1,498 @@
+{
+  "executive_summary": "Three posts are ready as concise, publishable drafts: one on pseudobulk-first single-cell DE, one on design-first multi-omics integration, and one on reproducible omics pipelines. Each keeps the same JSON structure with abstract, outline, method tables, code snippets, full draft, action items, and prioritized references.",
+  "posts": [
+    {
+      "id": "pseudobulk-first-single-cell",
+      "title": "Pseudobulk First for Single-Cell Differential Expression",
+      "date": "2026-05-01",
+      "category": "Single-Cell Analysis",
+      "excerpt": "For replicated perturbation studies, pseudobulk is still the most defensible default for condition-level differential expression in scRNA-seq. This post explains why the sample is the unit of inference, walks through a modern scanpy-to-edgeR or DESeq2 workflow, and shows where cell-level models still belong.",
+      "content": [
+        {
+          "type": "heading",
+          "text": "Abstract"
+        },
+        {
+          "type": "paragraph",
+          "text": "Pseudobulk remains the safest default when the scientific question is whether an exposure, treatment, or disease state changes expression across biological replicates. This post validates that recommendation with recent benchmark literature, shows how to aggregate counts in Python, and outlines a clean DE workflow in edgeR or DESeq2 with practical guidance for toxicology and exposure biology."
+        },
+
+        {
+          "type": "heading",
+          "text": "Tool and method fit"
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Approach",
+            "Best use case",
+            "Strengths",
+            "Main caution"
+          ],
+          "rows": [
+            [
+              "Cell-level Wilcoxon or marker tests",
+              "Cluster markers within one dataset",
+              "Fast and convenient for annotation",
+              "Treats cells as replicates and is not ideal for condition-level inference"
+            ],
+            [
+              "Pseudobulk plus edgeR",
+              "Replicated condition-level DE within cell types",
+              "Flexible design matrices and strong quasi-likelihood testing on counts",
+              "Needs raw counts and real biological replicates"
+            ],
+            [
+              "Pseudobulk plus DESeq2",
+              "Replicated condition-level DE with familiar DESeq2 reporting",
+              "Stable workflow, shrinkage tools, and clear outputs",
+              "Still depends on good filtering and correct design specification"
+            ],
+            [
+              "Cell-level mixed models",
+              "Sensitivity analysis or edge cases where aggregation is weak",
+              "Can model donor-level random effects explicitly",
+              "More compute, more tuning, and often less robust than pseudobulk for routine DE"
+            ]
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Minimal code snippets"
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Task",
+            "Minimal snippet"
+          ],
+          "rows": [
+            [
+              "Aggregate in scanpy",
+              "Python: `pb = sc.get.aggregate(adata, by=['sample','cell_type'], func='sum', layer='counts')`"
+            ],
+            [
+              "Aggregate with decoupler",
+              "Python: `pb = dc.pp.pseudobulk(adata, sample_col='sample', groups_col='cell_type', layer='counts', mode='sum')`"
+            ],
+            [
+              "edgeR differential expression",
+              "R: `y <- DGEList(counts=cts, samples=meta); keep <- filterByExpr(y, design); y <- calcNormFactors(y); y <- estimateDisp(y, design); fit <- glmQLFit(y, design); res <- glmQLFTest(fit, coef='conditionexposed')`"
+            ],
+            [
+              "DESeq2 differential expression",
+              "R: `dds <- DESeqDataSetFromMatrix(countData=cts, colData=meta, design=~ batch + condition); dds <- DESeq(dds); res <- results(dds, contrast=c('condition','exposed','control'))`"
+            ],
+            [
+              "Python-native DESeq2-style option",
+              "Python: `dds = DeseqDataSet(counts=cts_df, metadata=meta_df, design='~ batch + condition'); dds.deseq2(); stats = DeseqStats(dds, contrast=['condition','exposed','control']); stats.summary()`"
+            ]
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Full draft"
+        },
+        {
+          "type": "paragraph",
+          "text": "Single-cell RNA-seq makes it easy to forget a basic statistical fact: when the question is whether an exposure, treatment, or disease state changes expression, the biological replicate is the sample, not the cell. Cells are measurements nested inside that sample. If every cell is treated as an independent replicate, p-values become artificially small and the analysis starts rewarding abundance and sequencing depth instead of real between-sample biology. That is why pseudobulk has become the safest default for replicated condition-level differential expression. Instead of comparing cells directly, you compare sample-level summaries within each annotated cell type."
+        },
+        {
+          "type": "paragraph",
+          "text": "For toxicology and exposure biology, that logic matters even more. Many datasets are organized around donors, animals, wells, organs, or time points, and the scientific question is whether a condition shifts a cell type within that design. Pseudobulk answers that question cleanly: after quality control and annotation, raw counts are summed for each sample-by-cell-type combination, giving one count profile per biological replicate in each population of interest. At that point the analysis becomes a familiar bulk RNA-seq problem, which means you can use mature count models, explicit design matrices, and well-understood diagnostics instead of inventing a custom single-cell testing strategy for every project."
+        },
+        {
+          "type": "paragraph",
+          "text": "A strong workflow begins before aggregation. Keep raw integer counts in a dedicated layer, perform standard filtering, and finish cell annotation before testing. The reason is simple: pseudobulks are only meaningful if the cell identities are stable enough to represent a biological population rather than a moving cluster boundary. In practice, I would check three things before differential expression: first, each condition has genuine biological replication; second, each cell type has enough cells in enough samples to support inference; and third, the metadata needed for the design formula such as donor, batch, sex, exposure group, or time point are complete. If those basics are weak, no statistical model will save the analysis."
+        },
+        {
+          "type": "paragraph",
+          "text": "The aggregation step itself should use raw counts, not normalized expression. In the scverse ecosystem, `scanpy.get.aggregate` makes this straightforward, and `decoupler.pp.pseudobulk` adds useful quality-control summaries such as the number of cells per pseudobulk and the fraction of nonzero genes. Those metrics are worth plotting. A pseudobulk with twelve cells and one with twelve thousand cells should not be accepted uncritically as equivalent evidence. Once counts and sample metadata are aligned, I would treat edgeR quasi-likelihood testing as the strongest default because it handles complex designs well and remains fast. DESeq2 is also a very solid choice, especially if your lab already uses it and wants consistent shrinkage, reporting, and downstream conventions."
+        },
+        {
+          "type": "paragraph",
+          "text": "Filtering matters twice: once at the cell level and again at the pseudobulk level. Remove genes with too little information to support inference, and drop sample-by-cell-type pseudobulks that are effectively empty. I like to report these decisions explicitly because they often explain why one cell type yields robust results while another does not. A pragmatic starting rule is to avoid strong claims for cell populations with only one or two samples per condition or with extremely sparse representation. When the biology is borderline, a useful pattern is to run pseudobulk as the primary analysis and a donor-aware cell-level mixed model as sensitivity analysis. If both point to the same signal, confidence rises; if they diverge, the dataset usually needs more replication rather than more software."
+        },
+        {
+          "type": "paragraph",
+          "text": "Interpretation should be layered rather than gene-list driven. Start with differential expression per cell type, then move to pathway or regulator activity so the story focuses on affected programs rather than dozens of isolated genes. In exposure studies, that often means asking whether oxidative stress, xenobiotic metabolism, inflammatory signaling, mitochondrial function, unfolded protein response, or cell-cycle signatures are enriched in the same populations that show differential expression. decoupler, fgsea, PROGENy, and DoRothEA-style resources are useful here because they make it easier to translate count-based results into mechanism-level language. That is usually what readers of a toxicology site care about most: not simply which genes moved, but what the damaged program appears to be."
+        },
+        {
+          "type": "paragraph",
+          "text": "None of this means pseudobulk is universal. If the goal is trajectory analysis, rare-state discovery, cell-cell communication, or within-sample heterogeneity rather than sample-level inference, cell-level methods are still necessary. The right way to frame the choice is not 'pseudobulk versus single-cell' as a philosophical argument, but 'what is the unit of inference for my question?' If the answer is donor, animal, organoid, or exposure replicate, pseudobulk should be the baseline and cell-level models should be the exception. For a publishable blog post, that is the key message: pseudobulk is not a workaround for single-cell data; it is often the statistically correct analysis layer for replicated perturbation studies in computational toxicology and exposure biology."
+        },
+        {
+          "type": "heading",
+          "text": "Actionable takeaways"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Use the sample or donor as the unit of inference whenever the biological question is condition-level differential expression.",
+            "Sum raw counts by sample and cell type; do not pseudobulk normalized values.",
+            "Filter weak cell types and low-information genes before claiming biology.",
+            "Prefer edgeR quasi-likelihood or DESeq2 as the primary model; use cell-level mixed models as sensitivity analysis, not default habit.",
+            "Translate DE into pathways or regulator activity so the story is mechanistic, not just a long gene list."
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Prioritized references"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Squair JW et al. Confronting false discoveries in single-cell differential expression. Nature Communications, 2021. https://doi.org/10.1038/s41467-021-25960-2",
+            "Crowell HL et al. muscat detects subpopulation-specific state transitions from multi-sample multi-condition single-cell transcriptomics data. Nature Communications, 2020. https://doi.org/10.1038/s41467-020-19894-4",
+            "Single-cell best practices: Differential gene expression analysis. https://www.sc-best-practices.org/conditions/differential_gene_expression.html",
+            "Scanpy documentation: sc.get.aggregate. https://scanpy.readthedocs.io/en/1.11.x/generated/scanpy.get.aggregate.html",
+            "decoupler documentation: decoupler.pp.pseudobulk. https://decoupler.readthedocs.io/en/latest/api/generated/decoupler.pp.pseudobulk.html",
+            "edgeR User's Guide. https://bioconductor.org/packages/devel/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf",
+            "Chen Y et al. edgeR v4: powerful differential analysis of sequencing data with expanded functionality and improved support for small counts and larger datasets. Nucleic Acids Research, 2025. https://doi.org/10.1093/nar/gkaf018",
+            "DESeq2 package page and vignette. https://bioconductor.org/packages/release/bioc/html/DESeq2.html"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "design-first-multiomics-integration",
+      "title": "A Design-First Strategy for Multi-Omics Integration",
+      "date": "2026-05-01",
+      "category": "Multi-Omics",
+      "excerpt": "Multi-omics integration is not one problem with one winner. This post shows how to choose MOFA+, DIABLO, WNN, or MultiVI from study design, data geometry, and biological aim, with practical guidance for exposure biology and toxicology.",
+      "content": [
+        {
+          "type": "heading",
+          "text": "Abstract"
+        },
+        {
+          "type": "paragraph",
+          "text": "Multi-omics integration works best when method choice follows the question, not the other way around. This post turns tool selection into a design-first workflow, showing when to choose MOFA+, DIABLO, WNN, or MultiVI based on matched samples, supervised versus unsupervised goals, paired single-cell modalities, and missing-modality problems."
+        },
+        
+        {
+          "type": "heading",
+          "text": "Method comparison"
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Method",
+            "Best fit",
+            "Input pattern",
+            "Strengths",
+            "Main caution"
+          ],
+          "rows": [
+            [
+              "MOFA+",
+              "Unsupervised factor discovery on matched omics datasets",
+              "Same samples across multiple views",
+              "Interpretable latent factors and shared versus view-specific structure",
+              "Not a supervised classifier; still needs clean preprocessing and covariate checks"
+            ],
+            [
+              "DIABLO",
+              "Supervised multi-omics signatures tied to an outcome",
+              "Multiple blocks measured on the same samples with known labels",
+              "Balances cross-block correlation and class discrimination",
+              "Can overstate confidence if labels are weak or tuning is careless"
+            ],
+            [
+              "WNN",
+              "Paired multimodal single-cell clustering and annotation",
+              "Two modalities measured in the same cells",
+              "Simple, strong exploratory default for multimodal neighbor graphs",
+              "Best for graph-based analysis, not a general-purpose latent variable model"
+            ],
+            [
+              "MultiVI",
+              "RNA and ATAC integration with paired and unpaired cells",
+              "Paired multiome plus single-modality cells",
+              "Joint latent space, missing-modality handling, downstream DE and DA",
+              "More compute-intensive and usually benefits from GPU access"
+            ]
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Minimal code snippets"
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Task",
+            "Minimal snippet"
+          ],
+          "rows": [
+            [
+              "MOFA2 in R",
+              "R: `MOFAobject <- create_mofa(list(rna=rna_mat, prot=prot_mat, metab=metab_mat)); MOFAobject <- prepare_mofa(MOFAobject); MOFAobject <- run_mofa(MOFAobject, 'model.hdf5', use_basilisk=TRUE)`"
+            ],
+            [
+              "DIABLO model",
+              "R: `design <- matrix(0.1, nrow=3, ncol=3); diag(design) <- 0; fit <- block.splsda(X=data_blocks, Y=meta$condition, ncomp=2, keepX=list(rna=50, prot=30, metab=20), design=design)`"
+            ],
+            [
+              "DIABLO tuning",
+              "R: `tuned <- tune.block.splsda(X=data_blocks, Y=meta$condition, ncomp=2, test.keepX=list(rna=c(25,50), prot=c(10,30), metab=c(10,20)), design=design)`"
+            ],
+            [
+              "Seurat WNN",
+              "R: `obj <- FindMultiModalNeighbors(obj, reduction.list=list('pca','apca'), dims.list=list(1:30,1:18)); obj <- FindClusters(obj, graph.name='wsnn'); obj <- RunUMAP(obj, nn.name='weighted.nn', reduction.name='wnn.umap')`"
+            ],
+            [
+              "MultiVI in Python",
+              "Python: `scvi.model.MULTIVI.setup_mudata(mdata, batch_key='batch', modalities={'rna_layer':'rna_subset','atac_layer':'atac_subset','batch_key':'rna_subset'}); model = scvi.model.MULTIVI(mdata); model.train(); latent = model.get_latent_representation()`"
+            ]
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Full draft"
+        },
+        {
+          "type": "paragraph",
+          "text": "Multi-omics integration is easiest to misuse when it is framed as a mandatory step rather than a design question. The first decision is not which package to install; it is what kind of data geometry you have and what answer you want. Are all modalities measured on the same bulk samples? Are two or more modalities measured in the same single cells? Is the goal unsupervised structure discovery, phenotype prediction, batch correction, modality imputation, or mechanistic interpretation? Once those questions are explicit, the tool choice becomes much less mystical."
+        },
+        {
+          "type": "paragraph",
+          "text": "For matched bulk cohorts, where transcriptomics, proteomics, metabolomics, or methylation are measured on the same samples, I usually start with MOFA+. The attraction of MOFA+ is not that it magically solves integration; it is that it gives an interpretable latent factor model that can separate shared variation from view-specific variation across multiple omics layers. That is useful when the analysis question is exploratory: which hidden axes organize the cohort, do factors track exposure dose, time, sex, or pathology, and which features load most strongly on those factors? In toxicology settings, this often turns a pile of partially correlated assays into a smaller number of biologically readable programs."
+        },
+        {
+          "type": "paragraph",
+          "text": "If the outcome is already known and the priority is a compact multi-omics signature that discriminates groups, DIABLO is usually a better fit than MOFA+. DIABLO is supervised, so it optimizes for class separation while preserving relationships across blocks. That makes it attractive for treatment-versus-control studies, responder-versus-nonresponder classification, or any setting where you need a predictive signature rather than just latent structure. The catch is that DIABLO expects good preprocessing and careful tuning. If the outcome labels are weak, the sample size is very small, or the blocks are poorly matched, a supervised multiblock model can look more decisive than it really is. Cross-validation and held-out prediction are not optional extras here; they are the credibility check."
+        },
+        {
+          "type": "paragraph",
+          "text": "For paired single-cell multimodal data, the question changes again. With RNA plus ADT in CITE-seq or RNA plus ATAC in 10x Multiome, the main challenge is often defining cell state from more than one modality without flattening the contribution of either one. Weighted nearest neighbor analysis in Seurat is a good default when the data are measured in the same cells and the task is clustering, annotation, visualization, or neighbor graph construction. WNN is attractive because it is operationally simple and cell-centered: preprocess each modality, learn modality weights for each cell, then build a graph for downstream clustering and UMAP. It is a strong exploratory choice, not a universal model of biology."
+        },
+        {
+          "type": "paragraph",
+          "text": "MultiVI becomes compelling when the dataset is mixed rather than neatly paired, especially for RNA plus ATAC. If you have some cells with both modalities and additional cells with only one assay, MultiVI uses the paired data as an anchor and learns a joint latent space that supports integration, downstream analysis, and missing-modality imputation. That is especially useful when exposure studies accumulate data over time or across experimental arms, and the assay design changes between batches. The price is complexity: generative models usually need more compute, more parameter discipline, and better awareness of what the latent space actually encodes. A beautiful embedding is not a biological conclusion unless you can relate it back to covariates, markers, or validated programs."
+        },
+        {
+          "type": "paragraph",
+          "text": "The practical workflow I recommend is design-first and QC-first. Run unimodal checks before any integration: PCA or UMAP within each modality, sample-level clustering, basic differential analysis, missingness summaries, and batch diagnostics. Integration should solve a defined problem, not conceal one. For example, if a latent factor is dominated by run date or donor, that is not a discovery; it is a reminder that confounding still exists. For matched bulk studies, normalize each view appropriately, remove obvious technical artifacts, and ask whether shared factors are stable across resampling. For supervised models, reserve a validation set. For single-cell multimodal data, inspect whether cell types are improved, not merely rearranged, after integration."
+        },
+        {
+          "type": "paragraph",
+          "text": "Benchmarking papers from 2024 and 2025 reinforce a message practitioners already feel: there is no single winner across all tasks, modalities, and data structures. That is why the most honest blog post is not one that crowns a champion, but one that gives readers a decision tree. Use MOFA+ when you want interpretable unsupervised factors across matched samples. Use DIABLO when you need a supervised multi-block signature tied to an outcome. Use WNN for paired multimodal single-cell clustering and annotation. Use MultiVI when paired and unpaired RNA and ATAC data need a shared latent space and missing modalities matter. Treat all four as tools with clear problem statements, not as interchangeable badges of modernity."
+        },
+        {
+          "type": "heading",
+          "text": "Actionable takeaways"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Choose the method from data geometry and question before looking at embeddings.",
+            "Use MOFA+ for unsupervised factor discovery on matched omics datasets.",
+            "Use DIABLO when phenotype prediction and compact, cross-block signatures are the goal.",
+            "Use WNN for paired multimodal single-cell clustering and annotation; use MultiVI when paired and unpaired RNA and ATAC data must share a latent space.",
+            "Validate integration against batch structure, covariates, and biological plausibility; a nice embedding is not the endpoint."
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Prioritized references"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Argelaguet R et al. MOFA+: a statistical framework for comprehensive integration of multi-modal single-cell data. Genome Biology, 2020. https://doi.org/10.1186/s13059-020-02015-1",
+            "MOFA2 documentation and tutorial. https://biofam.github.io/MOFA2/ and https://bioconductor.org/packages/release/bioc/vignettes/MOFA2/inst/doc/getting_started_R.html",
+            "Singh A et al. DIABLO: an integrative approach for identifying key molecular drivers from multi-omics assays. Bioinformatics, 2019. https://doi.org/10.1093/bioinformatics/bty1054",
+            "mixOmics DIABLO documentation. https://mixomics.org/mixdiablo/",
+            "Hao Y et al. Integrated analysis of multimodal single-cell data. Cell, 2021. https://doi.org/10.1016/j.cell.2021.04.048",
+            "Seurat weighted nearest neighbor vignette. https://satijalab.org/seurat/articles/weighted_nearest_neighbor_analysis",
+            "Ashuach T et al. MultiVI: deep generative model for the integration of multimodal data. Nature Methods, 2023. https://doi.org/10.1038/s41592-023-01909-9",
+            "scvi-tools MultiVI docs plus 2025 multimodal benchmark. https://docs.scvi-tools.org/en/1.3.3/user_guide/models/multivi.html and https://doi.org/10.1038/s41592-025-02856-3"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reproducible-omics-pipeline-blueprint",
+      "title": "Building a Reproducible Omics Pipeline That Survives Review",
+      "date": "2026-05-01",
+      "category": "Reproducibility",
+      "excerpt": "A working notebook is not a reproducible pipeline. This post shows how to turn an omics analysis into a citable workflow using Snakemake or Nextflow, locked environments, containers, CI, semantic releases, and DOI-based archiving.",
+      "content": [
+        {
+          "type": "heading",
+          "text": "Abstract"
+        },
+        {
+          "type": "paragraph",
+          "text": "Reproducibility improves when an analysis moves from a notebook to a workflow with explicit inputs, outputs, software versions, and tests. This post shows how to make that jump without over-engineering, using Snakemake or Nextflow for orchestration, conda-lock for environment locking, containers for portability, and GitHub plus Zenodo for citable releases."
+        },
+        
+        {
+          "type": "heading",
+          "text": "Component comparison"
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Component",
+            "Role",
+            "Best when",
+            "Notes"
+          ],
+          "rows": [
+            [
+              "Snakemake",
+              "Rule-based workflow engine",
+              "Analysis-first lab workflows and paper pipelines",
+              "Readable, Pythonic, and strong for reports and file-based logic"
+            ],
+            [
+              "Nextflow",
+              "Process and channel workflow engine",
+              "Portable HPC or cloud pipelines and nf-core-style development",
+              "Excellent deployment, modularity, and multi-platform portability"
+            ],
+            [
+              "conda-lock",
+              "Exact environment locking",
+              "Need reproducible package resolution across Linux and macOS",
+              "Turns flexible specs into repeatable install plans"
+            ],
+            [
+              "Docker",
+              "Developer and CI container runtime",
+              "Local development and automated builds",
+              "Great for build and test loops"
+            ],
+            [
+              "Apptainer",
+              "HPC-friendly container runtime",
+              "Shared clusters and restricted environments",
+              "Portable and widely accepted in scientific HPC"
+            ],
+            [
+              "CI plus release metadata",
+              "Automated trust layer",
+              "Long-lived or shared pipelines",
+              "Add tiny test data, semantic versions, changelog, license, CITATION.cff, and DOI"
+            ]
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Minimal code snippets"
+        },
+        {
+          "type": "table",
+          "columns": [
+            "Task",
+            "Minimal snippet"
+          ],
+          "rows": [
+            [
+              "Minimal Snakemake rule",
+              "Snakefile: `rule all: input: 'results/report.tsv'; rule summarize: input: 'data/counts.tsv'; output: 'results/report.tsv'; conda: 'envs/base.yml'; shell: 'python scripts/summarize_counts.py {input} {output}'`"
+            ],
+            [
+              "Run Snakemake",
+              "CLI: `snakemake -j 4 --use-conda`"
+            ],
+            [
+              "Minimal Nextflow process",
+              "Nextflow: `process summarize { input: path counts; output: path 'report.tsv'; publishDir params.outdir, mode: 'copy'; script: 'python scripts/summarize_counts.py ${counts} report.tsv' } workflow { Channel.fromPath(params.counts) | summarize }`"
+            ],
+            [
+              "Lock an environment",
+              "CLI: `conda-lock -f environment.yml -p linux-64 -p osx-arm64`"
+            ],
+            [
+              "Install from a lockfile",
+              "CLI: `conda-lock install -n omics-pipeline conda-lock.yml`"
+            ],
+            [
+              "Build an HPC-friendly container",
+              "CLI: `apptainer build omics.sif apptainer.def`"
+            ],
+            [
+              "Archive a release",
+              "GitHub plus Zenodo: create a tagged release, then archive it so the release receives a DOI"
+            ]
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Full draft"
+        },
+        {
+          "type": "paragraph",
+          "text": "Many omics analyses are reproducible in the social sense but not in the computational sense: the notebook runs on the original author's machine, the figures look right, and nobody else can regenerate them six months later. The fix is not more commentary inside a notebook. The fix is to promote the analysis into a workflow with explicit inputs, explicit outputs, pinned software, and an execution model that can survive a new laptop, a cluster migration, or a reviewer request. Once you think of a project as a pipeline rather than a personal workspace, the path to publishable reproducibility becomes much clearer."
+        },
+        {
+          "type": "paragraph",
+          "text": "A minimal reproducibility stack has four layers. First, a workflow engine such as Snakemake or Nextflow defines task order, file dependencies, and reruns. Second, a locked software environment captures exact package versions. Third, a container makes that environment portable across machines, especially on shared HPC systems. Fourth, a tiny test dataset plus continuous integration verifies that the pipeline still executes after every change. If any one of those layers is missing, the project can still work, but it becomes fragile. The nice part is that none of these pieces are exotic anymore: they are all supported by mature bioinformatics infrastructure and documentation."
+        },
+        {
+          "type": "paragraph",
+          "text": "Snakemake is often the lowest-friction choice for a lab analysis that is evolving into a paper-ready workflow. Its rule-based model maps naturally onto the way analysts already think: this file should be created from these inputs using this command. It is readable, Python-friendly, and excellent for workflows that mix scripts, command-line tools, and ad hoc reporting. Nextflow is the better default when you expect the pipeline to live on clusters or cloud platforms, to be reused by many users, or to move toward nf-core-style modular development. Its process and channel model takes more discipline up front, but pays off when portability, modularization, and deployment become first-class concerns."
+        },
+        {
+          "type": "paragraph",
+          "text": "Environment management is where many otherwise careful pipelines fail. A plain `environment.yml` is useful, but it still allows fresh solves that can drift over time. `conda-lock` improves this by generating lock files for specific platforms, turning a general specification into an exact install plan. For development and CI, Docker remains convenient because it is ubiquitous and easy to cache. On shared clusters, Apptainer is often the practical choice because it fits HPC security expectations better. The most robust pattern is simple: define the environment once, lock it, and then make the workflow call that locked environment or container explicitly. If a collaborator cannot rebuild the software stack without guessing, the pipeline is not yet release-ready."
+        },
+        {
+          "type": "paragraph",
+          "text": "Testing should be tiny, automatic, and boring. Every serious pipeline should have a miniature dataset that finishes quickly and exercises the main branches of the workflow. That test dataset belongs in version control or in a stable remote location, and it should run in CI on every pull request. The goal is not performance benchmarking; it is breakage detection. This is also the moment to generate lightweight reports: a Snakemake HTML report or a Nextflow summary directory gives collaborators one location for parameters, software versions, key outputs, and sanity-check plots. Reproducibility is much easier to trust when the pipeline leaves an audit trail instead of a pile of unnamed intermediate files."
+        },
+        {
+          "type": "paragraph",
+          "text": "Release engineering is the step that turns a working pipeline into a citable research product. Use semantic versioning, keep a `CHANGELOG.md`, add a license, and include a `CITATION.cff`. Tag stable releases in GitHub, then archive them through Zenodo so each release receives a DOI. That sounds administrative, but it has scientific value: it tells readers exactly which version produced the manuscript figures, and it lets future users cite the software as a distinct output rather than a vague repository state. nf-core's release guidance is useful here even if you never plan to contribute to nf-core, because it encodes hard-won norms on testing, documentation, and version hygiene."
+        },
+        {
+          "type": "paragraph",
+          "text": "For a bioinformatics or toxicology site, the most useful post is the one that demystifies this process. Start with a notebook that already works. Extract repeated commands into scripts. Put those scripts behind Snakemake or Nextflow rules. Lock the environment. Add a container. Create one tiny test dataset. Run it in CI. Publish a stable release with a DOI. That sequence is realistic for an academic lab and immediately raises trust in every downstream result. Reproducibility is not an abstract virtue; it is a productivity tool. It reduces re-analysis time, lowers collaboration friction, survives personnel turnover, and makes the final scientific story easier to defend."
+        },
+        {
+          "type": "heading",
+          "text": "Actionable takeaways"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Move repeated notebook logic into scripts before building the workflow.",
+            "Choose one workflow engine and one environment strategy; mixed ad hoc execution is the enemy of reproducibility.",
+            "Lock environments with conda-lock and use containers when results must travel across machines.",
+            "Add one tiny end-to-end CI dataset before scaling to full cohorts.",
+            "Tag stable releases, keep a changelog, and archive releases with Zenodo so the pipeline is citable."
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Prioritized references"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Mölder F et al. Sustainable data analysis with Snakemake. F1000Research, latest version. https://doi.org/10.12688/f1000research.29032.3",
+            "Snakemake documentation. https://snakemake.readthedocs.io/",
+            "Nextflow official site and documentation. https://www.nextflow.io/ and https://docs.seqera.io/nextflow/",
+            "nf-core pipeline specifications. https://nf-co.re/docs/specifications/pipelines/overview",
+            "nf-core release procedure. https://nf-co.re/docs/developing/pipelines/release-procedure",
+            "conda-lock documentation. https://conda.github.io/conda-lock/",
+            "Apptainer user guide. https://apptainer.org/docs/user/main/",
+            "GitHub documentation on DOI archiving with Zenodo and citation files. https://docs.github.com/en/repositories/archiving-a-github-repository/referencing-and-citing-content and https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-citation-files"
+          ]
+        }
+      ]
+    }
+  ],
+  "checklist": [
+    "Keep the current JSON fields for each post: id, title, date, category, excerpt, and content. If you later extend the renderer, add tags, seoTitle, seoDescription, canonicalUrl, and readingTime as optional fields.",
+    "Frontmatter equivalent for the current JSON-driven site should be: stable id, human-readable title, ISO date, category, excerpt, and plain-English tags stored either in a new tags field or in your site dictionary.",
+    "Write an SEO title of roughly 55 to 60 characters and a meta description of about 140 to 160 characters for each post. Reuse the excerpt as a first draft, then tighten it for search intent.",
+    "Estimate reading time at about 220 words per minute. The three full drafts here are roughly in the 3 to 5 minute range each depending on how much code and tables you show in the modal.",
+    "If you keep the existing modal article component, test long tables and links on mobile widths before publishing. Very wide tables may need shorter cell text or CSS overflow handling.",
+    "Add tags that match your site's discovery logic. Suggested tags are: scRNA-seq, pseudobulk, edgeR, DESeq2, toxicology, multi-omics, MOFA2, DIABLO, Seurat, MultiVI, workflow, Snakemake, Nextflow, reproducibility.",
+    "For maintainability, keep one source-of-truth draft per post in a separate notes or markdown file even if the site consumes JSON. That makes later edits and citation refreshes much easier."
+  ]
+}

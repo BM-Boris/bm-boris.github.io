@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 154" role="img" aria-labelledby="annot-title annot-desc">
+  <title id="annot-title">Annot feature annotation preview</title>
+  <desc id="annot-desc">Mass spectrometry feature annotation workflow with mz, retention time, MS2 spectrum, and database hit.</desc>
+  <defs>
+    <linearGradient id="annot-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f2ede5"/>
+    </linearGradient>
+    <filter id="annot-shadow" x="-10%" y="-20%" width="120%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#1c1b18" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+
+  <rect width="320" height="154" rx="18" fill="url(#annot-bg)"/>
+
+  <g filter="url(#annot-shadow)" font-family="Inter, Helvetica, Arial, sans-serif">
+    <rect x="24" y="32" width="86" height="86" rx="12" fill="#ffffff" stroke="#ded9d1"/>
+    <rect x="24" y="32" width="86" height="22" rx="12" fill="#e9f0f2"/>
+    <g stroke="#ded9d1" stroke-width="1">
+      <path d="M24 54H110M24 75H110M24 96H110"/>
+      <path d="M63 32V118"/>
+    </g>
+    <text x="36" y="47" font-size="8" font-weight="760" letter-spacing="0.06em" fill="#67645f">FEATURE</text>
+    <text x="35" y="68" font-size="9" font-weight="700" fill="#20303c">m/z</text>
+    <text x="72" y="68" font-size="9" font-weight="700" fill="#20303c">466.81</text>
+    <text x="35" y="89" font-size="9" font-weight="700" fill="#20303c">RT</text>
+    <text x="75" y="89" font-size="9" font-weight="700" fill="#20303c">7.4</text>
+    <text x="35" y="110" font-size="9" font-weight="700" fill="#20303c">MS2</text>
+    <text x="74" y="110" font-size="9" font-weight="700" fill="#8b5a2b">match</text>
+  </g>
+
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M122 73H146" stroke="#8b5a2b" stroke-width="2"/>
+    <path d="M140 67L147 73L140 79" stroke="#8b5a2b" stroke-width="2"/>
+  </g>
+
+  <g filter="url(#annot-shadow)">
+    <rect x="156" y="34" width="78" height="84" rx="12" fill="#ffffff" stroke="#ded9d1"/>
+    <g stroke-linecap="round">
+      <path d="M169 101H222" stroke="#20303c" stroke-opacity="0.18"/>
+      <path d="M171 101V88M181 101V63M191 101V79M201 101V47M211 101V70M221 101V56" stroke="#20303c" stroke-width="2.4" stroke-opacity="0.76"/>
+      <path d="M181 63V101M201 47V101" stroke="#8b5a2b" stroke-width="3.2" stroke-opacity="0.78"/>
+    </g>
+    <g font-family="Inter, Helvetica, Arial, sans-serif" font-size="8" font-weight="760" letter-spacing="0.06em" fill="#67645f">
+      <text x="170" y="48">SPECTRUM</text>
+    </g>
+  </g>
+
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M246 73H268" stroke="#8b5a2b" stroke-width="2"/>
+    <path d="M262 67L269 73L262 79" stroke="#8b5a2b" stroke-width="2"/>
+  </g>
+
+  <g filter="url(#annot-shadow)" font-family="Inter, Helvetica, Arial, sans-serif">
+    <rect x="274" y="38" width="30" height="72" rx="10" fill="#151515"/>
+    <circle cx="289" cy="55" r="6" fill="#8b5a2b"/>
+    <circle cx="289" cy="75" r="6" fill="#ffffff" fill-opacity="0.88"/>
+    <circle cx="289" cy="95" r="6" fill="#20303c"/>
+    <rect x="252" y="116" width="52" height="18" rx="9" fill="#ffffff" stroke="#ded9d1"/>
+    <text x="263" y="128" font-size="8" font-weight="780" letter-spacing="0.04em" fill="#0f5d45">HIT 0.91</text>
+  </g>
+
+  <g font-family="Inter, Helvetica, Arial, sans-serif" font-size="8" font-weight="760" letter-spacing="0.06em" fill="#67645f">
+    <text x="31" y="132">MASS FEATURE</text>
+    <text x="168" y="132">MS/MS</text>
+  </g>
+</svg>

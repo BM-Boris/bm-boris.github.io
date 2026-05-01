@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 154" role="img" aria-labelledby="netan-title netan-desc">
+  <title id="netan-title">Netan multilayer network preview</title>
+  <desc id="netan-desc">Two omics layers connected by cross-layer edges with a selected feature module.</desc>
+  <defs>
+    <linearGradient id="netan-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#eef2f3"/>
+    </linearGradient>
+    <filter id="netan-shadow" x="-10%" y="-20%" width="120%" height="140%">
+      <feDropShadow dx="0" dy="7" stdDeviation="6" flood-color="#1c1b18" flood-opacity="0.11"/>
+    </filter>
+  </defs>
+
+  <rect width="320" height="154" rx="18" fill="url(#netan-bg)"/>
+
+  <g font-family="Inter, Helvetica, Arial, sans-serif" font-size="8" font-weight="760" letter-spacing="0.06em" fill="#67645f">
+    <text x="39" y="130">LAYER 1</text>
+    <text x="234" y="130">LAYER 2</text>
+    <text x="135" y="130">CROSS-OMICS</text>
+  </g>
+
+  <g filter="url(#netan-shadow)">
+    <rect x="34" y="30" width="96" height="80" rx="16" fill="#ffffff" stroke="#ded9d1"/>
+    <rect x="190" y="30" width="96" height="80" rx="16" fill="#ffffff" stroke="#ded9d1"/>
+  </g>
+
+  <g fill="none" stroke-linecap="round">
+    <path d="M72 57L98 44M72 57L101 83M98 44L111 69M101 83L111 69M61 88L101 83M61 88L72 57" stroke="#20303c" stroke-opacity="0.24" stroke-width="1.6"/>
+    <path d="M217 50L247 45M217 50L232 84M247 45L265 70M232 84L265 70M247 45L232 84" stroke="#20303c" stroke-opacity="0.24" stroke-width="1.6"/>
+    <path d="M111 69C139 46 170 46 217 50" stroke="#8b5a2b" stroke-opacity="0.52" stroke-width="2.2"/>
+    <path d="M101 83C138 104 187 105 232 84" stroke="#8b5a2b" stroke-opacity="0.52" stroke-width="2.2"/>
+    <path d="M98 44C148 76 187 79 247 45" stroke="#8b5a2b" stroke-opacity="0.28" stroke-width="1.6"/>
+  </g>
+
+  <g stroke="#ffffff" stroke-width="3">
+    <circle cx="72" cy="57" r="7.5" fill="#8b5a2b"/>
+    <circle cx="98" cy="44" r="7.5" fill="#8b5a2b"/>
+    <circle cx="101" cy="83" r="7.5" fill="#8b5a2b"/>
+    <circle cx="111" cy="69" r="8.6" fill="#8b5a2b"/>
+    <circle cx="61" cy="88" r="6.8" fill="#8b5a2b" fill-opacity="0.72"/>
+    <circle cx="217" cy="50" r="8.6" fill="#20303c"/>
+    <circle cx="247" cy="45" r="7.5" fill="#20303c"/>
+    <circle cx="232" cy="84" r="7.5" fill="#20303c"/>
+    <circle cx="265" cy="70" r="7.5" fill="#20303c"/>
+  </g>
+
+  <g font-family="Inter, Helvetica, Arial, sans-serif" filter="url(#netan-shadow)">
+    <rect x="133" y="57" width="54" height="29" rx="14.5" fill="#151515"/>
+    <text x="146" y="75" font-size="9" font-weight="780" fill="#ffffff">rank</text>
+  </g>
+</svg>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 320 180">
+  <!-- Generator: Adobe Illustrator 30.1.0, SVG Export Plug-In . SVG Version: 2.1.1 Build 136)  -->
+  <defs>
+    <style>
+      .st0 {
+        stroke: #20303c;
+      }
+
+      .st0, .st1, .st2, .st3 {
+        fill: none;
+        stroke-linecap: round;
+      }
+
+      .st0, .st3 {
+        stroke-width: 2.4px;
+      }
+
+      .st1 {
+        stroke: #c6beb3;
+        stroke-width: 1.8px;
+      }
+
+      .st4, .st5 {
+        stroke: #fff;
+        stroke-width: 3px;
+      }
+
+      .st4, .st6 {
+        fill: #8b5a2b;
+      }
+
+      .st5, .st7 {
+        fill: #20303c;
+      }
+
+      .st2 {
+        stroke-dasharray: 4 4;
+        stroke-width: 2.2px;
+      }
+
+      .st2, .st3 {
+        stroke: #8b5a2b;
+      }
+
+      .st7, .st6 {
+        font-family: Arial-BoldMT, Arial;
+        font-size: 13.3px;
+        font-weight: 700;
+        isolation: isolate;
+      }
+
+      .st8 {
+        fill: #fff;
+        stroke: #ded9d1;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <text class="st6" transform="translate(17.94 34.08)"><tspan x="0" y="0">GENES</tspan></text>
+  <text class="st7" transform="translate(218.86 34.08)"><tspan x="0" y="0">PROTEINS</tspan></text>
+  <g>
+    <line class="st1" x1="22.35" y1="100.41" x2="76.28" y2="74.87"/>
+    <line class="st1" x1="22.35" y1="100.41" x2="76.28" y2="137.31"/>
+    <line class="st3" x1="76.28" y1="74.87" x2="104.66" y2="111.76"/>
+    <line class="st1" x1="76.28" y1="137.31" x2="104.66" y2="111.76"/>
+    <line class="st1" x1="218.18" y1="74.87" x2="272.1" y2="100.41"/>
+    <line class="st0" x1="218.18" y1="140.14" x2="272.1" y2="100.41"/>
+    <line class="st1" x1="272.1" y1="100.41" x2="297.65" y2="131.63"/>
+    <line class="st2" x1="104.66" y1="111.76" x2="164.26" y2="69.19"/>
+    <line class="st2" x1="104.66" y1="111.76" x2="164.26" y2="154.34"/>
+    <line class="st1" x1="164.26" y1="69.19" x2="218.18" y2="74.87"/>
+    <line class="st1" x1="164.26" y1="154.34" x2="218.18" y2="140.14"/>
+  </g>
+  <g>
+    <circle class="st4" cx="22.35" cy="100.41" r="11.35"/>
+    <circle class="st4" cx="76.28" cy="74.87" r="11.35"/>
+    <circle class="st4" cx="76.28" cy="137.31" r="11.35"/>
+    <circle class="st4" cx="104.66" cy="111.76" r="12.77"/>
+    <circle class="st8" cx="164.26" cy="69.19" r="8.51"/>
+    <circle class="st8" cx="164.26" cy="154.34" r="8.51"/>
+    <circle class="st5" cx="218.18" cy="74.87" r="11.35"/>
+    <circle class="st5" cx="218.18" cy="140.14" r="11.35"/>
+    <circle class="st5" cx="272.1" cy="100.41" r="12.77"/>
+    <circle class="st5" cx="297.65" cy="131.63" r="11.35"/>
+  </g>
+</svg>
