@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Annot icon">
+  <rect width="512" height="512" rx="104" fill="#0d301c"/>
+  <rect x="16" y="16" width="480" height="480" rx="92" fill="none" stroke="#2f6f48" stroke-width="18"/>
+  <path
+    fill="#dce8df"
+    d="
+      M214 78
+      H298
+      L420 430
+      H337
+      L314 360
+      H198
+      L175 430
+      H92
+      L214 78
+      Z
+
+      M221 292
+      H291
+      L256 184
+      L221 292
+      Z
+    "
+  />
+</svg>

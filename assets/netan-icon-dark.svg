@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Netan icon">
+  <defs>
+    <linearGradient id="netan-dark-gradient" x1="10" y1="58" x2="54" y2="6" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3a170a"/>
+      <stop offset="1" stop-color="#6e2d10"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#netan-dark-gradient)" />
+  <rect x="2" y="2" width="60" height="60" rx="12" fill="none" stroke="#84431f" stroke-width="2" />
+  <path d="M16 48V16h8l16 20V16h8v32h-8L24 28v20h-8Z" fill="#e0e9e3"/>
+</svg>

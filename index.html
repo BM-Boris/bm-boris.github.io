@@ -18,8 +18,23 @@
     />
     <meta property="og:image" content="/assets/boris-minasenko.jpg" />
     <title>Boris Minasenko</title>
-    <script type="module" crossorigin src="/assets/index-BLhzJHMz.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-C6kdp9Cf.css">
+    <script>
+      (() => {
+        try {
+          const themeKey = "minasenko-theme";
+          const modeKey = "minasenko-theme-mode";
+          const mode = localStorage.getItem(modeKey);
+          const stored = localStorage.getItem(themeKey);
+          const system = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+          const theme = mode === "manual" && (stored === "light" || stored === "dark") ? stored : system;
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-CBcpEvrD.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BkmI2kHR.css">
   </head>
   <body>
     <div id="root"></div>
