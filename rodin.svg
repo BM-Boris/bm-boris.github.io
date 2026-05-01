@@ -4,101 +4,172 @@
   <defs>
     <style>
       .st0 {
-        fill: #67645f;
-        font-family: ArialMT, Arial;
-        font-size: 8.79px;
+        font-size: 7.27px;
       }
 
-      .st0, .st1, .st2 {
+      .st0, .st1, .st2, .st3, .st4, .st5, .st6 {
         isolation: isolate;
       }
 
-      .st1, .st2 {
-        font-family: Arial-BoldMT, Arial;
-        font-size: 10.98px;
-        font-weight: 700;
+      .st0, .st1, .st5 {
+        fill: #67645f;
+        font-family: ArialMT, Arial;
       }
 
-      .st1, .st3 {
-        fill: #20303c;
-      }
-
-      .st4, .st2 {
+      .st7, .st2, .st6 {
         fill: #8b5a2b;
       }
 
-      .st5, .st6, .st7, .st8, .st9 {
+      .st1 {
+        font-size: 9.13px;
+      }
+
+      .st2, .st4 {
+        font-size: 11.41px;
+      }
+
+      .st2, .st4, .st6 {
+        font-family: Arial-BoldMT, Arial;
+        font-weight: 700;
+      }
+
+      .st8, .st9, .st10, .st11, .st12 {
         fill: none;
       }
 
-      .st5, .st8 {
+      .st8, .st11 {
         stroke-width: 1.6px;
       }
 
-      .st5, .st9 {
+      .st8, .st12 {
         stroke: #8b5a2b;
         stroke-linecap: round;
       }
 
-      .st6, .st10 {
+      .st4, .st13 {
+        fill: #20303c;
+      }
+
+      .st9, .st14 {
         stroke: #ded9d1;
       }
 
-      .st7 {
-        stroke-width: 1.2px;
+      .st5 {
+        font-size: 6.24px;
       }
 
-      .st7, .st8 {
-        stroke: #b8b1a6;
-      }
-
-      .st9 {
-        stroke-width: 2.5px;
+      .st6 {
+        font-size: 11.53px;
       }
 
       .st10 {
+        stroke-width: 1.2px;
+      }
+
+      .st10, .st11 {
+        stroke: #b8b1a6;
+      }
+
+      .st12 {
+        stroke-width: 2.5px;
+      }
+
+      .st14 {
         fill: #fff;
       }
     </style>
   </defs>
   <g>
-    <line class="st6" x1="114.54" y1="28.49" x2="114.54" y2="151.51"/>
-    <line class="st6" x1="213.39" y1="28.49" x2="213.39" y2="151.51"/>
+    <line class="st9" x1="106.94" y1="23.66" x2="106.94" y2="151.51"/>
+    <line class="st9" x1="209.67" y1="23.66" x2="209.67" y2="151.51"/>
   </g>
   <g>
-    <text class="st2" transform="translate(22.28 39.48)"><tspan x="0" y="0">INPUT</tspan></text>
-    <rect class="st10" x="17.89" y="50.46" width="70.29" height="76.88" rx="8" ry="8"/>
-    <line class="st6" x1="17.89" y1="70.23" x2="88.18" y2="70.23"/>
-    <line class="st6" x1="17.89" y1="90" x2="88.18" y2="90"/>
-    <line class="st6" x1="17.89" y1="109.77" x2="88.18" y2="109.77"/>
-    <line class="st6" x1="39.85" y1="50.46" x2="39.85" y2="127.34"/>
-    <text class="st0" transform="translate(24.48 65.84)"><tspan x="0" y="0">ID</tspan></text>
-    <text class="st0" transform="translate(46.45 65.84)"><tspan x="0" y="0">f1</tspan></text>
-    <text class="st0" transform="translate(46.45 85.61)"><tspan x="0" y="0">f2</tspan></text>
-    <text class="st0" transform="translate(46.45 105.38)"><tspan x="0" y="0">f3</tspan></text>
-    <text class="st0" transform="translate(46.52 122.95)"><tspan x="0" y="0">f4</tspan></text>
+    <g class="st3">
+      <g class="st3">
+        <text class="st6" transform="translate(35.56 35.23) scale(.99 1)"><tspan x="0" y="0">INPUT</tspan></text>
+      </g>
+    </g>
+    <rect class="st14" x="16.61" y="49.41" width="73.05" height="79.9" rx="8" ry="8"/>
+    <line class="st9" x1="16.61" y1="69.96" x2="89.66" y2="69.96"/>
+    <line class="st9" x1="16.61" y1="90.51" x2="89.66" y2="90.51"/>
+    <line class="st9" x1="16.61" y1="111.05" x2="89.66" y2="111.05"/>
+    <line class="st9" x1="44.63" y1="49.41" x2="44.63" y2="129.31"/>
+    <g class="st3">
+      <g class="st3">
+        <text class="st1" transform="translate(62.92 83.07)"><tspan x="0" y="0">f1</tspan></text>
+      </g>
+    </g>
+    <g class="st3">
+      <g class="st3">
+        <text class="st1" transform="translate(62.92 103.61)"><tspan x="0" y="0">f2</tspan></text>
+      </g>
+    </g>
+    <g class="st3">
+      <g class="st3">
+        <text class="st1" transform="translate(62.92 124.16)"><tspan x="0" y="0">f3</tspan></text>
+      </g>
+    </g>
+    <g class="st3">
+      <g class="st3">
+        <text class="st0" transform="translate(49.23 63.56)"><tspan x="0" y="0">expression</tspan></text>
+      </g>
+      <g class="st3">
+        <g class="st3">
+          <text class="st0" transform="translate(23.7 63.56)"><tspan x="0" y="0">gene</tspan></text>
+        </g>
+      </g>
+      <g class="st3">
+        <text class="st5" transform="translate(22.73 83.07)"><tspan x="0" y="0">SOX2</tspan></text>
+      </g>
+      <g class="st3">
+        <g class="st3">
+          <text class="st5" transform="translate(22.32 122.43)"><tspan x="0" y="0">SOX9</tspan></text>
+        </g>
+        <g class="st3">
+          <g class="st3">
+            <text class="st5" transform="translate(21.41 103.61)"><tspan x="0" y="0">GATA6</tspan></text>
+          </g>
+        </g>
+      </g>
+    </g>
   </g>
   <g>
-    <text class="st1" transform="translate(140.9 39.48)"><tspan x="0" y="0">ANALYSIS</tspan></text>
-    <line class="st7" x1="134.31" y1="127.34" x2="198.02" y2="127.34"/>
-    <line class="st7" x1="134.31" y1="127.34" x2="134.31" y2="59.25"/>
-    <path class="st9" d="M143.1,114.16c6.59-9.89,12.08-35.15,19.77-32.95s12.08,21.97,19.77,10.98c6.59-9.89,8.79-27.46,19.77-37.34"/>
-    <circle class="st3" cx="182.64" cy="92.2" r="3.62"/>
-    <circle class="st3" cx="202.41" cy="54.85" r="3.62"/>
-    <text class="st0" transform="translate(143.1 142.72)"><tspan x="0" y="0">stats</tspan></text>
-    <text class="st0" transform="translate(178.25 142.72)"><tspan x="0" y="0">plots</tspan></text>
-    <circle class="st3" cx="160.67" cy="81.83" r="3.62"/>
+    <g class="st3">
+      <g class="st3">
+        <text class="st4" transform="translate(134.33 35.08)"><tspan x="0" y="0">ANALYSIS</tspan></text>
+      </g>
+    </g>
+    <line class="st10" x1="127.48" y1="126.39" x2="193.69" y2="126.39"/>
+    <line class="st10" x1="127.48" y1="126.39" x2="127.48" y2="55.63"/>
+    <path class="st12" d="M136.62,112.69c6.85-10.28,12.55-36.53,20.55-34.24s12.55,22.83,20.55,11.41c6.85-10.28,9.13-28.54,20.55-38.81"/>
+    <circle class="st13" cx="177.71" cy="89.87" r="3.76"/>
+    <circle class="st13" cx="198.25" cy="51.06" r="3.76"/>
+    <g class="st3">
+      <g class="st3">
+        <text class="st1" transform="translate(136.62 142.37)"><tspan x="0" y="0">stats</tspan></text>
+      </g>
+    </g>
+    <g class="st3">
+      <g class="st3">
+        <text class="st1" transform="translate(173.15 142.37)"><tspan x="0" y="0">plots</tspan></text>
+      </g>
+    </g>
+    <circle class="st13" cx="154.88" cy="79.1" r="3.76"/>
   </g>
   <g>
-    <text class="st2" transform="translate(233.03 38.99)"><tspan x="0" y="0">PATHWAYS</tspan></text>
-    <line class="st8" x1="252.8" y1="67.55" x2="280.26" y2="86.22"/>
-    <line class="st8" x1="252.8" y1="67.55" x2="250.6" y2="110.38"/>
-    <line class="st8" x1="280.26" y1="86.22" x2="250.6" y2="110.38"/>
-    <circle class="st4" cx="252.8" cy="67.55" r="8.79"/>
-    <circle class="st3" cx="280.26" cy="86.22" r="8.79"/>
-    <circle class="st4" cx="250.6" cy="110.38" r="8.79"/>
-    <circle class="st10" cx="301.7" cy="142.82" r="6.59"/>
-    <line class="st5" x1="297.31" y1="142.82" x2="306.09" y2="142.82"/>
-    <line class="st5" x1="301.7" y1="138.42" x2="301.7" y2="147.21"/>
+    <g class="st3">
+      <g class="st3">
+        <text class="st2" transform="translate(230.08 34.57)"><tspan x="0" y="0">PATHWAYS</tspan></text>
+      </g>
+    </g>
+    <line class="st11" x1="250.62" y1="64.26" x2="279.16" y2="83.66"/>
+    <line class="st11" x1="250.62" y1="64.26" x2="248.34" y2="108.77"/>
+    <line class="st11" x1="279.16" y1="83.66" x2="248.34" y2="108.77"/>
+    <circle class="st7" cx="250.62" cy="64.26" r="9.13"/>
+    <circle class="st13" cx="279.16" cy="83.66" r="9.13"/>
+    <circle class="st7" cx="248.34" cy="108.77" r="9.13"/>
+    <circle class="st14" cx="301.44" cy="142.48" r="6.85"/>
+    <line class="st8" x1="296.88" y1="142.48" x2="306" y2="142.48"/>
+    <line class="st8" x1="301.44" y1="137.91" x2="301.44" y2="147.04"/>
   </g>
 </svg>
